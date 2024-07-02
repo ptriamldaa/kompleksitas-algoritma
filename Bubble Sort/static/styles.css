@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #602f2f;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #000000;
+}
+
+.container {
+    background-color: rgba(253, 216, 210, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    text-align: center;
+    color: #000000;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+    color: #000000;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+input[type="number"] {
+    width: calc(100% - 16px);
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.button-group button {
+    background-color: #6a2424;
+    color: white;
+    border: #6a2424;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.button-group button:last-child {
+    margin-right: 0;
+}
+
+.button-group button:hover {
+    background-color: #5c1818;
+}
+
+.result-container {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    color: #000000;
+}
+
+.result-container h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.result p {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.tambah-data-button {
+    background-color: #6a2424;
+    color: white;
+    border: #6a2424;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.tambah-data-button:hover {
+    background-color: #5c1818;
+}

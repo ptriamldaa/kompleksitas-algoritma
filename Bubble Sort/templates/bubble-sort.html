@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Program Bubble Sort</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Program Bubble Sort</h1>
+        <form action="/" method="post" id="bubble-sort-form">
+            <div class="form-group">
+                <label for="n">Masukkan Jumlah Bilangan:</label><br />
+                <input type="number" id="n" name="n" value="{{ n }}" required />
+            </div>
+
+            <div id="data-fields">
+                {% if n %}
+                    {% for i in range(1, n + 1, 2) %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="data{{ i }}">Bilangan Ke-{{ i }}:</label><br>
+                                <input type="number" id="data{{ i }}" name="data{{ i }}" value="{{ data[i-1] }}" required>
+                            </div>
+                            {% if i + 1 <= n %}
+                                <div class="form-group">
+                                    <label for="data{{ i + 1 }}">Bilangan Ke-{{ i + 1 }}:</label><br>
+                                    <input type="number" id="data{{ i + 1 }}" name="data{{ i + 1 }}" value="{{ data[i] }}" required>
+                                </div>
+                            {% else %}
+                                <div class="form-group"></div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div id="buttons">
+                {% if not n %}
+                    <button type="button" class="tambah-data-button" onclick="addDataFields()">Tambah Data</button>
+                {% else %}
+                    <div class="button-group">
+                        <button type="submit">Urutkan</button>
+                        <button type="button" onclick="resetDataFields()">Reset</button>
+                        <button type="button" onclick="window.location.href='/'">Ulang</button>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if hasil %}
+                <div class="result-container">
+                    <h2>Hasil Bubble Sort</h2>
+                    <div class="result">
+                        <div style="float:left;width:50%;">
+                            <h3>Sebelum Pengurutan:</h3>
+                            {% for i in range(n) %}
+                                <p>{{ data_before_sort[i] }}</p>
+                            {% endfor %}
+                        </div>
+                        <div style="float:right;width:50%;">
+                            <h3>Setelah Pengurutan:</h3>
+                            {% for i in range(n) %}
+                                <p>{{ hasil[i] }}</p>
+                            {% endfor %}
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+    <script>
+        function addDataFields() {
+            const n = document.getElementById("n").value;
+            const dataFields = document.getElementById("data-fields");
+            dataFields.innerHTML = "";
+
+            for (let i = 1; i <= n; i += 2) {
+                if (i + 1 <= n) {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                                 <div class="form-group">
+                                                     <label for="data${i + 1}">Bilangan Ke-${i + 1}:</label><br>
+                                                     <input type="number" id="data${i + 1}" name="data${i + 1}" required>
+                                                 </div>
+                                             </div>`;
+                } else {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                             </div>`;
+                }
+            }
+
+            document.getElementById("buttons").innerHTML = `<div class="button-group">
+                                                                <button type="submit">Urutkan</button>
+                                                                <button type="button" onclick="resetDataFields()">Reset</button>
+                                                                <button type="button" onclick="window.location.href='/'">Ulang</button>
+                                                            </div>`;
+        }
+
+        function resetDataFields() {
+            const n = document.getElementById("n").value;
+            const dataFields = document.getElementById("data-fields");
+            dataFields.innerHTML = "";
+
+            for (let i = 1; i <= n; i += 2) {
+                if (i + 1 <= n) {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                                 <div class="form-group">
+                                                     <label for="data${i + 1}">Bilangan Ke-${i + 1}:</label><br>
+                                                     <input type="number" id="data${i + 1}" name="data${i + 1}" required>
+                                                 </div>
+                                             </div>`;
+                } else {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                             </div>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

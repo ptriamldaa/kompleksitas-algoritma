@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Program Hitung Rata-rata</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1f4368;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #000000;
+        }
+
+        .container {
+            background-color: rgba(221, 238, 255, 0.8); 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+            color: #000000;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+            color: #000000;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .form-group:last-child {
+            margin-right: 0;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .button-group button {
+            background-color: #2b547e;
+            color: white;
+            border: #2b547e;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .button-group button:last-child {
+            margin-right: 0;
+        }
+
+        .button-group button:hover {
+            background-color: #3e6b9a;
+        }
+
+        .result-container {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            color: #000000;
+        }
+
+        .result-container h2 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .result p {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+
+        .tambah-data-button {
+            background-color: #2b547e;
+            color: white;
+            border: #2b547e;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .tambah-data-button:hover {
+            background-color: #3e6b9a;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Program Hitung Rata-rata</h1>
+        <form action="/proses" method="post" id="hitung-rerata-form">
+            <div class="form-group">
+                <label for="n">Masukkan Jumlah Bilangan:</label><br />
+                <input type="number" id="n" name="n" value="{{ n }}" required />
+            </div>
+
+            <div id="data-fields">
+                {% if n %}
+                    {% for i in range(1, n + 1, 2) %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="data{{ i }}">Bilangan Ke-{{ i }}:</label><br>
+                                <input type="number" id="data{{ i }}" name="data{{ i }}" value="{{ data[i-1] }}" required>
+                            </div>
+                            {% if i + 1 <= n %}
+                                <div class="form-group">
+                                    <label for="data{{ i + 1 }}">Bilangan Ke-{{ i + 1 }}:</label><br>
+                                    <input type="number" id="data{{ i + 1 }}" name="data{{ i + 1 }}" value="{{ data[i] }}" required>
+                                </div>
+                            {% else %}
+                                <div class="form-group"></div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div id="buttons">
+                {% if not n %}
+                    <button type="button" class="tambah-data-button" onclick="addDataFields()">Tambah Data</button>
+                {% else %}
+                    <div class="button-group">
+                        <button type="submit">Hitung Rata-rata</button>
+                        <button type="button" onclick="resetDataFields()">Reset</button>
+                        <button type="button" onclick="window.location.href='/'">Ulang</button>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if hasil %}
+                <div class="result-container">
+                    <h2>Hasil Hitung Rata-rata</h2>
+                    <div class="result">
+                        {% for i in range(n) %}
+                            <p><strong>Bilangan Ke-{{ i + 1 }}:</strong> {{ hasil['data'][i] }}</p>
+                        {% endfor %}
+                        <p><strong>Rata-rata:</strong> {{ hasil['rerata'] }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+    <script>
+        function addDataFields() {
+            const n = document.getElementById("n").value;
+            const dataFields = document.getElementById("data-fields");
+            dataFields.innerHTML = "";
+
+            for (let i = 1; i <= n; i += 2) {
+                if (i + 1 <= n) {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                                 <div class="form-group">
+                                                     <label for="data${i + 1}">Bilangan Ke-${i + 1}:</label><br>
+                                                     <input type="number" id="data${i + 1}" name="data${i + 1}" required>
+                                                 </div>
+                                             </div>`;
+                } else {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                             </div>`;
+                }
+            }
+
+            document.getElementById("buttons").innerHTML = `<div class="button-group">
+                                                                <button type="submit">Hitung Rata-rata</button>
+                                                                <button type="button" onclick="resetDataFields()">Reset</button>
+                                                                <button type="button" onclick="window.location.href='/'">Ulang</button>
+                                                            </div>`;
+        }
+
+        function resetDataFields() {
+            const n = document.getElementById("n").value;
+            const dataFields = document.getElementById("data-fields");
+            dataFields.innerHTML = "";
+
+            for (let i = 1; i <= n; i += 2) {
+                if (i + 1 <= n) {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                                 <div class="form-group">
+                                                     <label for="data${i + 1}">Bilangan Ke-${i + 1}:</label><br>
+                                                     <input type="number" id="data${i + 1}" name="data${i + 1}" required>
+                                                 </div>
+                                             </div>`;
+                } else {
+                    dataFields.innerHTML += `<div class="form-row">
+                                                 <div class="form-group">
+                                                     <label for="data${i}">Bilangan Ke-${i}:</label><br>
+                                                     <input type="number" id="data${i}" name="data${i}" required>
+                                                 </div>
+                                             </div>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
